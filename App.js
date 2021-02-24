@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
-import {screensEnabled} from 'react-native-screens';
+
 import {
   StackNavigatorScreen,
   NativeStackNavigatorScreen,
@@ -10,8 +10,6 @@ import {
   MaterialBottomTabNavigatorScreen,
   BottomTabNavigatorScreen,
 } from './src/screens';
-
-screensEnabled();
 
 const Drawer = createDrawerNavigator();
 
