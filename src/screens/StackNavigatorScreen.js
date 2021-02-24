@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {enableScreens} from 'react-native-screens';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import {useRoute} from '@react-navigation/native';
@@ -10,14 +10,30 @@ const Stack = createNativeStackNavigator();
 
 const Custom = (props) => {
   const route = useRoute();
-  return <Text style={styles.title}>Custom: {route.params?.data}</Text>;
+  return (
+    <Text style={styles.title}>
+      Route Params from useRoute: {route.params?.data}
+    </Text>
+  );
 };
 
 const Screen = ({route, navigation}) => {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // do something on event
+      console.log('focused');
+    });
+
+    return () => {
+      console.log('unsubscribe');
+      unsubscribe();
+    };
+  }, [navigation]);
+
   return (
     <>
-      <Text style={styles.title}>{route.name}</Text>
-      <Text style={styles.title}>{route.params?.data}</Text>
+      <Text style={styles.title}>Route Name: {route.name}</Text>
+      <Text style={styles.title}>Route Params: {route.params?.data}</Text>
       <Custom />
       <Button
         title="Home"
@@ -43,6 +59,14 @@ const Screen = ({route, navigation}) => {
           navigation.navigate('Settings', {data: 'four'});
         }}
       />
+
+      <Button
+        title="Login"
+        style={{marginTop: 50}}
+        onPress={() => {
+          navigation.navigate('Login');
+        }}
+      />
     </>
   );
 };
@@ -60,7 +84,6 @@ export default function StackNavigatorScreen({navigation}) {
 
 const styles = StyleSheet.create({
   title: {
-    textAlign: 'center',
     fontSize: 20,
     padding: 20,
   },
